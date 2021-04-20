@@ -1,32 +1,79 @@
-# Prerequisites
-*.d
+// Fill out your copyright notice in the Description page of Project Settings.
+#include "BullCowCartridge.h"
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
 
-# Precompiled Headers
-*.gch
-*.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+void UBullCowCartridge::BeginPlay() // When the game starts
+{
+    Super::BeginPlay();
 
-# Fortran module files
-*.mod
-*.smod
+    setupGame();
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+    endGame();
+}
 
-# Executables
-*.exe
-*.out
-*.app
+void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
+{
+
+    if (bGameOver) {
+        ClearScreen();
+        setupGame();
+    }
+    else {
+        if (Input == hiddenWord)
+        {
+            PrintLine("You won!");
+            endGame();
+        }
+        else {
+            --setLive;
+        }
+        if (setLive == 1) {
+            PrintLine(TEXT("Incorrect! you have %i live remaining"), setLive);
+        }
+
+        if (setLive > 0 && setLive != 1)
+        {
+                PrintLine(TEXT("Incorrect! you have %i lives remaining"), setLive);  
+        }
+        if(setLive == 0) {
+            PrintLine(TEXT("%i lives remaining you lose!"), setLive);
+            endGame();
+        }
+    }
+}
+
+    // Check if isogram
+    // Prompt to Guess again
+    // Check Right number of character
+    // Prompt to guess again
+
+    // Remove Life
+    
+    // Check if lives > 0
+    // If yes guess again
+    // Show lives left
+    // If no show gameOver, hiddenWord
+    // Ask user for try again or press enter
+    // Check user input
+    // Play again
+    // End the game
+
+
+    void UBullCowCartridge::setupGame()
+{
+    PrintLine(TEXT("Welcosme to Bull Cows game!")); 
+    hiddenWord = TEXT("cake");
+    setLive = hiddenWord.Len(); 
+    bGameOver = false;
+    PrintLine(TEXT("Guess the %i letter word"), hiddenWord.Len());
+    PrintLine(TEXT("You have %i lives!"), setLive);
+    PrintLine(TEXT("Press 'TAB' for enable typing!"));
+}
+
+void UBullCowCartridge::endGame()
+{
+    bGameOver = true;
+    PrintLine(TEXT("Press enter to play again!"));
+}
+
